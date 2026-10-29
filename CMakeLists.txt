@@ -12,6 +12,8 @@ add_executable(hydrogen
   src/main.cpp
   src/app/application.cpp
   src/app/application.h
+  src/render/renderer.cpp
+  src/render/renderer.h
 )
 
 target_include_directories(hydrogen PRIVATE src)
