@@ -6,9 +6,14 @@
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
+#include "app/application.h"
+
 #include <iostream>
 #include <vector>
 #include <cmath>
+
+constexpr int screenWidth = 1080;
+constexpr int screenHeight = 1080;
 
 int main(){
 //glfw initialisation
@@ -20,7 +25,7 @@ int main(){
   glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
   
 //glfw window pointer to window
-  GLFWwindow* window = glfwCreateWindow(1080, 1080, "Hydrogen Orbitals", nullptr, nullptr);
+  GLFWwindow* window = glfwCreateWindow(screenWidth, screenHeight, "Hydrogen Orbitals", nullptr, nullptr);
   if(!window){std::cerr << "Failed to create window\n"; return -1;}
 
 //make current context window 
@@ -32,15 +37,11 @@ GLenum err = glewInit();
 if (err != GLEW_OK){std::cerr << "Failed to init Glew\n"; return -1;}
 glGetError();
 
-//main render loop 
-while (!glfwWindowShouldClose(window)){
-  glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-  glClear(GL_COLOR_BUFFER_BIT);
+application app = application(window, screenWidth, screenHeight);
 
-  glfwSwapBuffers(window);
-  glfwPollEvents();
-}
+app.run();
 
+glfwDestroyWindow(window);
 glfwTerminate();
 return 0;
 

@@ -8,5 +8,12 @@ find_package(glfw3 REQUIRED)
 find_package(GLEW REQUIRED)
 find_package(OpenGL REQUIRED)
 
-add_executable(hydrogen src/main.cpp)
+add_executable(hydrogen
+  src/main.cpp
+  src/app/application.cpp
+  src/app/application.h
+)
+
+target_include_directories(hydrogen PRIVATE src)
+
 target_link_libraries(hydrogen PRIVATE glfw GLEW::GLEW OpenGL::GL)
