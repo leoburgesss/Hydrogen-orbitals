@@ -3,6 +3,7 @@
 #include <GLFW/glfw3.h>
 #include <GL/glew.h>
 #include <glm/glm.hpp>
+#include <glm/gtc/type_ptr.hpp> 
 #include <iostream>
 #include <fstream>
 #include <sstream>
@@ -10,14 +11,14 @@
 #include <vector>
 
 constexpr float pi = 3.14159265358979323846f;
-constexpr int circleSegments = 100;
+constexpr int circleSegments = 8;
 
 //function to rewrite the vbo and reconfigure the vao
 void Renderer::setVertices(const std::vector<float>& points, int components){
   components_ = components;
   vertexCount_ = static_cast<int>(points.size()) / components;
 
-
+  glBindVertexArray(vao_); 
   glBindBuffer(GL_ARRAY_BUFFER, vbo_); //binds the buffer from the vbo handle to the gl array so using this array targets the vbo
   glBufferData(GL_ARRAY_BUFFER, 
                 points.size() * sizeof(float),
@@ -78,27 +79,54 @@ void Renderer::createProgram(const std::string& vertPath, const std::string& fra
     glDeleteShader(fs);
 }
 
-void Renderer::drawCircle(float cx, float cy, float radius, float d){
-  std::vector<float> points; points.reserve((circleSegments + 2) * 2);
+glm::mat4 Renderer::computeMVP() {
+    int fw, fh;
+    glfwGetFramebufferSize(window_, &fw, &fh);
+    float aspect = static_cast<float>(fw) / static_cast<float>(fh);
+    glm::mat4 proj = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
+    
+    glm::mat4 view = glm::lookAt(
+        glm::vec3(0.0f, 0.0f, 3.0f), //where camera is 
+        glm::vec3(0.0f, 0.0f, 0.0f), //where to look
+        glm::vec3(0.0f, 1.0f, 0.0f) //up
+        );
+      
+    glm::mat4 mvp = proj * view; 
+    return mvp;
+}
 
-    points.push_back(cx); points.push_back(cy); 
+void Renderer::drawCircle(float cx, float cy, float cz, float radius, float d){
+  std::vector<float> points; points.reserve((circleSegments + 2) * 3);
+
+    points.push_back(cx); points.push_back(cy); points.push_back(cz); 
+
 
     for(int i{0}; i<=circleSegments; i++){
       float theta = 2 * (float)i * pi / (float)circleSegments;
       points.push_back(cx + radius * std::cos(theta)); 
       points.push_back(cy + radius * std::sin(theta));
+      points.push_back(cz);
     }
 
-    setVertices(points, 2);
+    setVertices(points, 3);
     glUseProgram(program_); //uses the shader handle 
-    glBindVertexArray(vao_); //makes vao the current vao 
-    glDrawArrays(GL_TRIANGLE_FAN, 0, circleSegments + 2); //draws the array in vbo every triangles made of the 3 points center point currect vertex and prior vertex to create a circle  
+    glm::mat4 mvp = computeMVP();
+
+    setMVP(mvp);
+    glBindVertexArray(vao_); //makes vao the current vao
+    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount_); //draws the array in vbo every triangles made of the 3 points center point currect vertex and prior vertex to create a circle  
+}
+
+void Renderer::setMVP(const glm::mat4& mvp) {
+    glUseProgram(program_);
+    glUniformMatrix4fv(mvpLoc_, 1, GL_FALSE, glm::value_ptr(mvp));
 }
 
 Renderer::Renderer(GLFWwindow* window, int w, int h): window_(window), width_(w), height_(h) {
     glGenVertexArrays(1, &vao_);
     glGenBuffers(1, &vbo_);
-    createProgram("shaders/circle.vert", "shaders/circle.frag"); //constructor to create vbo vao and the shaders 
+    createProgram("shaders/circle.vert", "shaders/circle.frag");
+    mvpLoc_ = glGetUniformLocation(program_, "uMVP");
 }
 
 

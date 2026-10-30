@@ -1,14 +1,17 @@
 #pragma once 
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>
+#include <glm/glm.hpp>
 #include <string>
 #include <vector>
 
 class Renderer{
   public:
     Renderer(GLFWwindow* window, int w, int h);
-    void drawCircle(float x, float y, float radius, float d);
+    void drawCircle(float cx, float cy, float cz, float radius, float d);
     void setVertices(const std::vector<float>& points, int components);
+    void setMVP(const glm::mat4& mvp);
+    glm::mat4 computeMVP();
 
   private:
     GLFWwindow* window_; //pointer to glfw window
@@ -20,6 +23,8 @@ class Renderer{
     int components_, vertexCount_;
     //components: float per vertex in vbo
     //vertex count: total number of vertices from every shape in the vbo
+    GLint mvpLoc_;
+
     int width_, height_;
     //screen size
     
