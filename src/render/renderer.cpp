@@ -11,7 +11,7 @@
 #include <vector>
 
 constexpr float pi = 3.14159265358979323846f;
-constexpr int circleSegments = 100;
+constexpr int circleSegments = 10;
 
 //function to rewrite the vbo and reconfigure the vao
 void Renderer::setVertices(const std::vector<float>& points, int components){
@@ -83,12 +83,12 @@ glm::mat4 Renderer::computeMVP() {
     int fw, fh;
     glfwGetFramebufferSize(window_, &fw, &fh);
     float aspect = static_cast<float>(fw) / static_cast<float>(fh);
-    glm::mat4 proj = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
+    glm::mat4 proj = glm::perspective(glm::radians(60.0f), aspect, 0.1f, 100.0f);
     
     double t = glfwGetTime();
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(6 * std::sin(t), 1.0f, 6 * std::cos(t)), //where camera is 
+        glm::vec3(8 * std::sin(t/4), 1.0f, 8 * std::cos(t/4)), //where camera is 
         glm::vec3(0.0f, 0.0f, 0.0f), //where to look
         glm::vec3(0.0f, 1.0f, 0.0f) //up
         );
@@ -175,7 +175,7 @@ void Renderer::drawSphere(float cx, float cy, float cz, float radius, float d){
     glm::mat4 mvp = computeMVP();
     setMVP(mvp);
     glBindVertexArray(vao_);
-    glDrawArrays(GL_LINES, 0, vertexCount_);
+    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount_); //lazy and bad to use triangle fan
   }
 
 
