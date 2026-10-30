@@ -14,9 +14,8 @@ void Application::run(){
   while (!glfwWindowShouldClose(window_)){
     //clear scren
     glClearColor(0.05f, 0.05f, 0.05f, 1.0f);
-    glClear(GL_COLOR_BUFFER_BIT);
-    renderer_.drawCircle(0.0f, -0.5f, 1.0f, 0.5f, 1);
-    renderer_.drawCircle(0.0f, 0.5f, -1.0f, 0.5f, 1);
+    glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+    renderer_.drawCircle(0.0f, 0.0f, 0.0f, 0.5f, 0.6);
         
     
 

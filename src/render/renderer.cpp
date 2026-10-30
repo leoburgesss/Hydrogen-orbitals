@@ -11,7 +11,7 @@
 #include <vector>
 
 constexpr float pi = 3.14159265358979323846f;
-constexpr int circleSegments = 8;
+constexpr int circleSegments = 100;
 
 //function to rewrite the vbo and reconfigure the vao
 void Renderer::setVertices(const std::vector<float>& points, int components){
@@ -86,7 +86,7 @@ glm::mat4 Renderer::computeMVP() {
     glm::mat4 proj = glm::perspective(glm::radians(45.0f), aspect, 0.1f, 100.0f);
     
     glm::mat4 view = glm::lookAt(
-        glm::vec3(0.0f, 0.0f, 3.0f), //where camera is 
+        glm::vec3(-1.0f, -1.5f, 1.5f), //where camera is 
         glm::vec3(0.0f, 0.0f, 0.0f), //where to look
         glm::vec3(0.0f, 1.0f, 0.0f) //up
         );
@@ -97,15 +97,19 @@ glm::mat4 Renderer::computeMVP() {
 
 void Renderer::drawCircle(float cx, float cy, float cz, float radius, float d){
   std::vector<float> points; points.reserve((circleSegments + 2) * 3);
+  
+  int lobes = 5;
+  float amp = d * radius;
+  float t = static_cast<float>(glfwGetTime());
 
     points.push_back(cx); points.push_back(cy); points.push_back(cz); 
 
-
     for(int i{0}; i<=circleSegments; i++){
       float theta = 2 * (float)i * pi / (float)circleSegments;
-      points.push_back(cx + radius * std::cos(theta)); 
-      points.push_back(cy + radius * std::sin(theta));
-      points.push_back(cz);
+
+      points.push_back(cx + amp * std::sin(lobes * theta + t * 2.0f));
+      points.push_back(cy + radius * std::cos(theta)); 
+      points.push_back(cz + radius * std::sin(theta));
     }
 
     setVertices(points, 3);

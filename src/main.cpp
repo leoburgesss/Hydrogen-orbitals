@@ -30,14 +30,17 @@ int main(){
 
 //make current context window 
   glfwMakeContextCurrent(window);
-  glfwSwapInterval(1);
-  //glEnable(GL_DEPTH_TEST);
+  glfwSwapInterval(0);
 
 //glew initialisation
 glewExperimental = GL_TRUE;
 GLenum err = glewInit();
 if (err != GLEW_OK){std::cerr << "Failed to init Glew\n"; return -1;}
 glGetError();
+
+glEnable(GL_DEPTH_TEST);
+glDepthMask(GL_TRUE);
+glDepthFunc(GL_LEQUAL);
 
 //create application class which manages everything
 Application app = Application(window, screenWidth, screenHeight);
