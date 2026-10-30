@@ -30,7 +30,7 @@ int main(){
 
 //make current context window 
   glfwMakeContextCurrent(window);
-  glfwSwapInterval(1);
+  glfwSwapInterval(0);
 
 //glew initialisation
 glewExperimental = GL_TRUE;

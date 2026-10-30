@@ -9,6 +9,7 @@ class Renderer{
   public:
     Renderer(GLFWwindow* window, int w, int h);
     void drawCircle(float cx, float cy, float cz, float radius, float d);
+    void drawAxis();
     void setVertices(const std::vector<float>& points, int components);
     void drawSphere(float cx, float cy, float cz, float radius, float d);
     void setMVP(const glm::mat4& mvp);

@@ -1,4 +1,4 @@
-#version 330 core 
+#version 330 core
 layout (location = 0) in vec3 aPos; //vertex input attribute 3 floats for position
 uniform mat4 uMVP;
 out float vDepth;

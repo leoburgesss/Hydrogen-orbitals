@@ -88,13 +88,48 @@ glm::mat4 Renderer::computeMVP() {
     double t = glfwGetTime();
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(0.0f + std::sin(t), 0.0f, 6.0f), //where camera is 
+        glm::vec3(6 * std::sin(t), 1.0f, 6 * std::cos(t)), //where camera is 
         glm::vec3(0.0f, 0.0f, 0.0f), //where to look
         glm::vec3(0.0f, 1.0f, 0.0f) //up
         );
       
     glm::mat4 mvp = proj * view; 
     return mvp;
+}
+
+void Renderer::drawAxis(){
+  std::vector<float> points;
+  points.push_back(-10);
+  points.push_back(0);
+  points.push_back(0);
+
+  points.push_back(10);
+  points.push_back(0);
+  points.push_back(0);
+
+   points.push_back(0);
+  points.push_back(-10);
+  points.push_back(0);
+
+  points.push_back(0);
+  points.push_back(10);
+  points.push_back(0);
+
+   points.push_back(0);
+  points.push_back(0);
+  points.push_back(-10);
+
+  points.push_back(0);
+  points.push_back(0);
+  points.push_back(10);
+
+  setVertices(points, 3);
+  glUseProgram(program_);
+  glm::mat4 mvp = computeMVP();
+
+  setMVP(mvp);
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_LINES, 0, vertexCount_);
 }
 
 void Renderer::drawCircle(float cx, float cy, float cz, float radius, float d){
@@ -125,7 +160,7 @@ void Renderer::drawSphere(float cx, float cy, float cz, float radius, float d){
 
   for(int i{0}; i<=circleSegments; i++){
     for(int j{0}; j<=circleSegments; j++){
-      float theta = 2 * (float)i * pi / (float)circleSegments;
+      float theta = (float)i * pi / (float)circleSegments;
       float phi = 2 * (float)j * pi / (float)circleSegments;
 
       float sint = std::sin(theta); float sinp = std::sin(phi);
@@ -140,7 +175,7 @@ void Renderer::drawSphere(float cx, float cy, float cz, float radius, float d){
     glm::mat4 mvp = computeMVP();
     setMVP(mvp);
     glBindVertexArray(vao_);
-    glDrawArrays(GL_POINTS, 0, vertexCount_);
+    glDrawArrays(GL_LINES, 0, vertexCount_);
   }
 
 

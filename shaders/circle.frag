@@ -7,4 +7,3 @@ void main() {
     vec3 hot = vec3(1.0, 0.2, 0.1);
     FragColor = vec4(mix(cold, hot, t), 1.0);
 }
-
