@@ -37,14 +37,13 @@ GLenum err = glewInit();
 if (err != GLEW_OK){std::cerr << "Failed to init Glew\n"; return -1;}
 glGetError();
 
-int fw = 0; int fh = 0;
-glfwGetFramebufferSize(window, &fw, &fh);
-std::cout << "framebuffer: " << fw << "x" << fh << "\n";
-
+//create application class which manages everything
 Application app = Application(window, screenWidth, screenHeight);
 
+//calls the main loop of the application 
 app.run();
 
+//terminates when main loop finishes
 glfwDestroyWindow(window);
 glfwTerminate();
 return 0;
