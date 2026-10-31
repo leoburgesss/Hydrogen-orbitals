@@ -20,17 +20,17 @@ void Application::run(){
     renderer_.drawAxis();
     for(float z{-2}; z<=2;z+=0.1){
       for(float x{-2}; x<=2; x+=0.1){
-      renderer_.drawSphere(x, std::sin(now + z + x), z , 0.025, 1);
+      renderer_.drawSphere(x, x*std::sin(now + z), z , 0.025, 1);
     }}
  
     
 
-    frames++;
-    if (now - lastTime >= 10) {
-      std::cout << (frames / (now - lastTime)) << " FPS\n";
-      frames = 0;
-      lastTime = now;
-    }
+    //frames++;
+    //if (now - lastTime >= 10) {
+    //  std::cout << (frames / (now - lastTime)) << " FPS\n";
+    //  frames = 0;
+    //  lastTime = now;
+    //}
     
     //gl draws to buffer behind current when rendering so when finished rendering it swaps buffers to flip frame
     glfwSwapBuffers(window_);

@@ -1,0 +1,262 @@
+\documentclass{article}
+\usepackage{geometry, amsmath, amsfonts}
+\geometry{margin=1in, top=0.8in}
+
+\begin{document}
+
+\noindent\textbf{Schrodinger's Wave Equation For a Hydrogen Atom - By Leo}\\[0.2em]
+\noindent\rule{\textwidth}{0.4pt}
+\textit{This was written while I was in Year 12 as a project to help me learn all 4 of my subjects further and with greater rigour - using AI to teach me (not to fully write) the physics and how to solve these equations so that I understand these equations further than just regurgitating definitions. Im writing this from the perspective of teaching a former self these concepts so that I can consolidate the why and how. Although I wouldn't be able to solve this on my own I wanted to understand the why and not just use the maths without knowing what it did}
+\section{Parametric 3D space}
+Any position in 3D space can be written parametrically in the form of a spherical co-ordinate:
+
+\begin{align*}
+x = r\sin\theta\cos\phi, \quad
+y = r\sin\theta\sin\phi, \quad
+z = r\cos\theta 
+\end{align*}
+\begin{align*}
+\text{with }   r& \geq0,\quad \theta \in [0, \pi],\quad \phi \in [0,2\pi),\quad \text{ and volume element } dV = r^2\sin\theta dr d\theta d\phi
+\end{align*}
+Here r is the distance from the origin to a point in 3D space, $\theta$ is the polar angle, measured from $+z$, and $\phi$ is the azimuthal angle in the $xy$ plane, measured from $+x$.\\\\
+The volume element is the factor you need to multiply to get the new volume when changing the volume, for cartesian co-ordinates this is trivial, $dV = dxdydz$, as you are increasing the size of a cuboid, but with spherical co-ordinates this becomes a bit tricky as you aren't increasing the size of a box.\\\\
+As a sanity check you could integrate across it:
+\begin{align*}
+V &= \int_0^R \int_0^\pi \int_0^{2\pi} r^2\sin\theta \,d\phi \,d\theta \,dr\\
+&= 2\pi \int_0^R \int_0^\pi r^2\sin\theta \,d\theta \,dr\\
+&= 4\pi \int_0^R r^2 \,dr\\
+&= \frac{4\pi}{3} R^3
+\end{align*}
+which is exactly what you would expect from a sphere.\\\\
+
+\section{The Laplacian}
+The Laplacian is a differential operator, the Laplacian takes function $f(x,y,z)$ and gives a measure of how much the function curves at each point.\\
+For cartesian co-ordinates the Laplacian is the sum of the second partial derivatives with respect to each co-ordinates, written like this:
+\begin{align*}
+\nabla^2f = \frac{\partial^2f}{\partial x^2} + \frac{\partial^2f}{\partial y^2} + \frac{\partial^2f}{\partial z^2}        
+\end{align*}
+So for example if you had $f(x,y,z)=x^2 + y^2 + z^2$
+\begin{align*}
+    \frac{\partial^2f}{\partial x^2} =2, \quad \frac{\partial^2f}{\partial y^2} = 2, \quad \frac{\partial^2f}{\partial z^2} = 2
+    &\implies\nabla^2f = 6
+\end{align*}
+\newpage
+\noindent Now for spherical co-ordinates the Laplacian is:
+\begin{align*}
+      \nabla^2f
+  = \frac{1}{r^2}\frac{\partial}{\partial r}\!\left(r^2 \frac{\partial}{\partial r}\right)
+  + \frac{1}{r^2\sin\theta}\frac{\partial}{\partial\theta}\!\left(\sin\theta \frac{\partial}{\partial\theta}\right)
+  + \frac{1}{r^2\sin^2\theta}\frac{\partial^2}{\partial\phi^2}.
+\end{align*}
+Which you can derive from doing the Laplacian of $f(x(r,\theta,\phi),\,y(r,\theta,\phi),\,y(r,\theta,\phi))$ using the chain rule.
+
+\section{The Schrödinger Equation}
+\begin{itemize}
+  \item A hydrogen atom is a proton with one electron bound to it by electrostatic attraction.
+  \item Classical physics says that the electron should spiral into the proton (accelerating charge radiates energy). It does not, so the classical physics is wrong at this scale.
+  \item Quantum mechanics replaces "the electron is at position $r$" with "the electron's state is described by a wavefunction $\psi(r)$."
+  \item The wavefunction itself isn't directly observable. What is observable is $|\psi(r)|^2$, which gives the probability density of finding the electron at r.
+  \item An orbital is a particular allowed wavefunction, labelled by quantum numbers.
+\end{itemize}
+These are adopted postulates from quantum mechanics for our equation, no further assumptions are required.\\\\
+The Schrödinger Equation is stated as:
+\begin{align*}
+    - \frac{\hbar^2}{2m_e}
+    \nabla^2\psi(r)+
+    V(r)\psi(r) =
+    E\psi(r)
+\end{align*}
+
+Unpacking this term by term:
+\begin{itemize}
+\item $- \frac{\hbar^2}{2m_e}$ is the kinetic energy term, the Laplacian measures the curvature of the wave function - a wave function with more curvature costs more kinetic energy.
+\item $V(r)\psi$ is the potential energy term. For hydrogen, V is the Coulomb attraction between the electron and proton.
+\item $E\psi$ is the total energy, where E is the eigenvalue and $\psi$ is the corresponding wavefunction (eigenfunction).
+\end{itemize}
+The constants $\hbar,m_e,e,4\pi\epsilon_0$ clutter our equations, and therefore we adopt atomic units, where\\ $\hbar = m_e = e = 4\pi\epsilon_0 = 1$ in these units, distances are measured in Bohr radii and energies in hartrees. After these changes our equation simplifies dramatically.\\
+The new equation (given in atomic units) is given as:
+\begin{align*}
+    -\frac{1}{2} \nabla^2\psi + V\psi = E\psi
+ \end{align*}
+\newpage
+ \section{The Coulomb Potential}
+ The coulomb potential for hydrogen (in atomic units) is:
+ \begin{align*}
+     V(r) = -\frac{1}{|r|} = -\frac{1}{r}
+ \end{align*}
+ Here the minus sign means the attraction to the nucleus. The potential depends only on the distance r from the nucleus, not the direction, we can exploit this property later to seperate the equation.
+
+ \section{The Equation To Be Solved}
+ We now finally have the equation:
+ \begin{align*}
+     -\frac{1}{2} \nabla^2\psi - \frac{1}{r}\psi(r) = E\psi
+ \end{align*}
+ Which has the following boundary conditions:
+ \begin{itemize}
+     \item Normalisability: $\int |\psi|^2dV = 1$, so $|\psi|^2$ is a probability distribution
+     \item Vanishing at infinity: $\psi \rightarrow 0 \text{ as }r \rightarrow \infty$
+     \item Single-valued: $\psi$ has at most one value at each point
+ \end{itemize}
+ \section{Manipulating The Equations To Solvable Forms}
+  \subsection{Substituting}
+ Before we noted that the potential $V(r) = -\frac{1}{r}$ depends only on the distance from the nucleus, not on direction. The atom looks the same from every angle. We will now try a wavefunction of the form $\psi(r,\theta,\phi) = R(r)\Theta(\theta)\Phi(\phi)$\\\\
+ substituting $\psi(r,\theta,\phi) = R(r)\Theta(\theta)\Phi(\phi)$ into our previous Schrödinger equation we recieve:
+\[
+      -\frac{1}{2}\left[
+    \frac{1}{r^2}\frac{\partial}{\partial r}\!\left(r^2\frac{\partial\psi}{\partial r}\right)
+    + \frac{1}{r^2\sin\theta}\frac{\partial}{\partial\theta}\!\left(\sin\theta\frac{\partial\psi}{\partial\theta}\right)
+    + \frac{1}{r^2\sin^2\theta}\frac{\partial^2\psi}{\partial\phi^2}
+  \right]
+  - \frac{1}{r}\psi = E\psi\\
+\]
+subsituting $\psi = R\Theta\Phi$
+\begin{align*}
+    \frac{\partial}{\partial r} (r^2 \frac{\partial(R\Theta\Phi)}{\partial r}) &= \Theta\Phi\frac{d}{dr}(r^2\frac{dR}{dr})\\\\
+    \frac{\partial}{\partial \theta} (\sin\theta \frac{\partial(R\Theta\Phi)}{\partial r}) &= R\Phi\frac{d}{d\theta}(\sin\theta\frac{d\Theta}{d\theta})\\\\
+    \frac{\partial^2(R\Theta\Phi)}{\partial\phi^2} &= R\Theta\frac{d^2\Phi}{d\phi^2} 
+\end{align*}
+Ordinary d's replace partials as each function now depends only on one variable. Substituting again:
+\[
+  -\frac{1}{2}\left[
+    \Theta\Phi\,\frac{1}{r^2}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)
+    + \frac{R\Phi}{r^2\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)
+    + \frac{R\Theta}{r^2\sin^2\theta}\frac{d^2\Phi}{d\phi^2}
+  \right]
+  - \frac{1}{r}R\Theta\Phi
+  = E\,R\Theta\Phi
+\]
+\newpage
+Divide through by $R\Theta\Phi$
+\[
+  -\frac{1}{2}\left[
+    \frac{1}{R}\frac{1}{r^2}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)
+    + \frac{1}{\Theta}\frac{1}{r^2\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)
+    + \frac{1}{\Phi}\frac{1}{r^2\sin^2\theta}\frac{d^2\Phi}{d\phi^2}
+  \right]
+  - \frac{1}{r} = E
+\]
+Now multiply through by $-2r^2$ and rearrange
+\[
+  \frac{1}{R}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)
+  + 2r^2\left(E + \frac{1}{r}\right)
+  + \frac{1}{\Theta\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)
+  + \frac{1}{\Phi\sin^2\theta}\frac{d^2\Phi}{d\phi^2}
+  = 0
+\]
+\subsection{Seperating r From The Angles}
+The equation must hold for all points in space. Consider varying r while holding $\theta$ and $\phi$ constant. the first group of terms only vary as r varies, while the further terms are unaffected by r. So for their sum to equal zero regardless of $r$, each group must seperately be constant - and those constants must be equal and opposite
+
+\[
+  \underbrace{\frac{1}{R}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)+ 2r^2\left(E + \frac{1}{r}\right)}_{\text{depends only on r}}
+  + 
+  \underbrace{\frac{1}{\Theta\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)+ \frac{1}{\Phi\sin^2\theta}\frac{d^2\Phi}{d\phi^2}}_{\text{depends only on $\theta\phi$}}
+  = 0
+\]
+Introducing the seperation constant $\lambda$:
+\begin{align*}
+\frac{1}{R}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)+ 2r^2\left(E + \frac{1}{r}\right) &= \lambda\\\\
+\frac{1}{\Theta\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)+ \frac{1}{\Phi\sin^2\theta}\frac{d^2\Phi}{d\phi^2} &= -\lambda
+\end{align*}
+\subsection{Second Seperation of $\theta$ from $\phi$}
+Multiply the second equation by $\sin^2\theta$:
+\[
+\frac{\sin\theta}{\Theta}\frac{d}{d\theta}(\sin\theta\frac{d\Theta}{d\theta}) + \lambda\sin^2\theta + \frac{1}{\Phi}\frac{d^2\Phi}{d\phi^2} =0 
+\]
+Now again we see that the first terms depend only on $\theta$ while the further terms only depend on $\phi$. So we can introduce a second seperation constant. We write this as $-m^2$, we write this constant as $-m^2$ as the equation for $\Phi$ will have oscillatory solutions in the form $e^{\pm im\phi}$.\\
+Then:
+\[
+\frac{1}{\Phi}\frac{d^2\Phi}{d\phi^2} =-m^2
+\]
+\[
+\frac{\sin\theta}{\Theta}\frac{d}{d\theta}(\sin\theta\frac{d\Theta}{d\theta}) + \lambda\sin^2\theta = m^2
+\]
+Re-arranging both into solvable forms:
+\[
+\frac{d^2\Phi}{d^2\phi} = -m^2
+\]
+\[
+\frac{1}{\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)
+  + \left(\lambda - \frac{m^2}{\sin^2\theta}\right)\Theta = 0
+\]
+\newpage
+\subsection{Final Solvable Forms}
+\[ (R) \quad\frac{1}{R}\frac{d}{dr}\!\left(r^2\frac{dR}{dr}\right)+ 2r^2\left(E + \frac{1}{r}\right) = \lambda \]
+\[ (\Theta) \quad \frac{1}{\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)
+  + \left(\lambda - \frac{m^2}{\sin^2\theta}\right)\Theta = 0\]
+\[(\Phi) \quad \frac{d^2\Phi}{d^2\phi} = -m^2\]
+
+\section{Solving These New Equations}
+\subsection{First ODE}
+Out of these equations the simplest to solve will be the azimuthal equation for $\Phi(\phi)$\\
+Assume $\Phi=e^{k\phi}$ and differentiate twice:
+\[
+\frac{d\Phi}{d\phi} =ke^{k\phi}, \quad \frac{d^2\Phi}{d\phi^2} =k^2e^{k\phi}\\
+\]
+\[
+k^2e^{k\phi} = -m^2e^{k\phi}
+\]
+\[
+k^2 = -m^2 \implies k=\pm im
+\]
+\[
+ \Phi = Ae^{im\phi} + Be^{-im\phi}
+\]
+Now we must impose boundary conditions. The wave function must be single valued meaning that a point in space cannot have two different probabilities. Since $\phi$ and $2\pi + \phi$ describe the same physical point we require:
+\[
+\Phi(\phi + 2\pi) = \Phi (\phi)
+\]
+Using $\Phi(\phi)=e^{im\phi}$:
+\[
+e^{im(\phi +2\pi)} = e^{im\phi} \implies e^{2\pi im} = 1
+\]
+\[m =0,\pm1,\pm2,...\]
+\[
+    \boxed{m\in \mathbb{Z}}
+\]
+\subsection{Normalising This Result}
+Now we need to fix the constant A by requiring
+\[
+\int^{2\pi}_0 |\Phi|^2d\phi = 1
+\]
+For the complex form $\Phi = Ae^{im\phi}$, this is:
+\[
+\int^{2\pi}_0 |A|^2d\phi = 2\pi|A|^2 = 1 \implies |A| = \frac{1}{\sqrt{2\pi}}
+\]
+Giving:
+\[
+\boxed{\Phi_m(\phi) = \frac{1}{\sqrt{2\pi}}e^{im\phi}, \quad m\in \mathbb{Z}}
+\]
+So we have recieved our first quantum number, m, which controls how the wavefunctions varies as you go around the z axis.
+\newpage
+\subsection{The Second ODE}
+The first azimuthal equation gave us our first quantum number m. Now we need to solve the polar equation $\Theta(\theta)$ which turns out being much harder.\\
+We need to solve:
+\[
+\quad \frac{1}{\sin\theta}\frac{d}{d\theta}\!\left(\sin\theta\frac{d\Theta}{d\theta}\right)
+  + \left(\lambda - \frac{m^2}{\sin^2\theta}\right)\Theta = 0
+  \]
+With $\lambda$ still an undertemined seperation constant meaning, unlike the previous ODE, this has non constant coefficients, and its solutions are not elementary functions. The equation involves both $\sin\theta$ and $\cos\theta$, and derivatives with respect to $\theta$. If we substitute $u = \cos\theta$, trigonometric functions become polynomials which are easier to work with.
+
+\[
+  \frac{d}{d\theta}
+  = \frac{du}{d\theta}\frac{d}{du}
+  = -\sin\theta\frac{d}{du}
+\]
+So
+\[
+\sin\theta\frac{d}{d\theta} = \sin\theta(-\sin\theta\frac{d}{du}) = -\sin^2\theta\frac{d}{d\theta} = -(1-u^2)\frac{d}{du}
+\]
+And applying twice like the equation does
+\[
+\sin\theta\frac{d}{d\theta}(\sin\theta\frac{d\Theta}{d\theta}) = (1-u^2)\frac{d}{du}[(1-u^2)\frac{dP}{du}]
+\]
+Where $P(u) = \theta(\arccos u)$
+Substitute into the equation, divide through by $\sin^2\theta$ and you get:
+\[
+  \frac{d}{du}\!\left[(1-u^2)\frac{dP}{du}\right]
+  + \left(\lambda - \frac{m^2}{1-u^2}\right)P = 0
+\]
+This is the associated Legrendre equation which is a standard second-order ODE which solutions are known and we will use.
+\end{document}
+
+

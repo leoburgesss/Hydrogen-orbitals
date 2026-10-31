@@ -2,7 +2,7 @@
 in float vDepth;
 out vec4 FragColor; //final rgba output for this fragment written to the framebuffer at draw time 
 void main() {
-    float t = clamp(vDepth * 0.15 + 0.5, 0, 1.0);
+    float t = clamp(vDepth/2 + 0.5, 0, 1.0);
     vec3 cold = vec3(0.16, 0.0, 0.03);
     vec3 mid = vec3(0.91, 0.23, 0.37);
     vec3 hot = vec3(1.00, 0.89, 0.92);
