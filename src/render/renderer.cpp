@@ -88,7 +88,7 @@ glm::mat4 Renderer::computeMVP() {
     double t = glfwGetTime();
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(35 * std::sin(t/4), 10*std::sin(t/8), 35*std::cos(t/4)), //where camera is 
+        glm::vec3(35 * std::sin(t/4), 10, 35*std::cos(t/4)), //where camera is 
         glm::vec3(0.0f, 0.0f, 0.0f), //where to look
         glm::vec3(0.0f, 1.0f, 0.0f) //up
         );
