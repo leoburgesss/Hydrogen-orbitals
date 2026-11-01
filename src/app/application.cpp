@@ -10,6 +10,8 @@ Application::Application(GLFWwindow* window, int w, int h) : window_(window), wi
 void Application::run(){
   double lastTime = glfwGetTime();
   int frames = 0;
+  std::cout << "Generating density cloud!";
+  std::vector<float> cloud = hydrogen::densityCloud(0.0001, 3, 2, 0, 256, 20);
 
   while (!glfwWindowShouldClose(window_)){
     double now = glfwGetTime();
@@ -17,12 +19,8 @@ void Application::run(){
     //clear screen
     glClearColor(0.0706f, 0.0431f, 0.0392f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-    renderer_.drawAxis();
-    for(float z{-2}; z<=2;z+=0.01){
-      for(float x{-2}; x<=2; x+=0.01){
-      renderer_.drawPoint(x, x*std::sin(now + z), z , 1);
-    }}
-    renderer_.drawPoints();
+  
+    renderer_.drawPoints(cloud);
  
     
 

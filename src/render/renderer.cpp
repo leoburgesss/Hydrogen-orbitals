@@ -83,12 +83,12 @@ glm::mat4 Renderer::computeMVP() {
     int fw, fh;
     glfwGetFramebufferSize(window_, &fw, &fh);
     float aspect = static_cast<float>(fw) / static_cast<float>(fh);
-    glm::mat4 proj = glm::perspective(glm::radians(60.0f), aspect, 0.1f, 100.0f);
+    glm::mat4 proj = glm::perspective(glm::radians(50.0f), aspect, 0.1f, 100.0f);
     
     double t = glfwGetTime();
 
     glm::mat4 view = glm::lookAt(
-        glm::vec3(8 * std::sin(t/4), 1.0f, 8 * std::cos(t/4)), //where camera is 
+        glm::vec3(35 * std::sin(t/4), 10*std::sin(t/8), 35*std::cos(t/4)), //where camera is 
         glm::vec3(0.0f, 0.0f, 0.0f), //where to look
         glm::vec3(0.0f, 1.0f, 0.0f) //up
         );
@@ -97,52 +97,21 @@ glm::mat4 Renderer::computeMVP() {
     return mvp;
 }
 
-void Renderer::drawAxis(){
-  std::vector<float> points;
-  points.push_back(-10);
-  points.push_back(0);
-  points.push_back(0);
 
-  points.push_back(10);
-  points.push_back(0);
-  points.push_back(0);
+void Renderer::drawPoints(std::vector<float> c){
+  for(int i{0}; i<=c.size()/4; ++i){
+  points_.push_back(c[4*i]);
+  points_.push_back(c[4*i+1]);
+  points_.push_back(c[4*i+2]);
+  points_.push_back(c[4*i+3]);
+  }
 
-   points.push_back(0);
-  points.push_back(-10);
-  points.push_back(0);
 
-  points.push_back(0);
-  points.push_back(10);
-  points.push_back(0);
-
-   points.push_back(0);
-  points.push_back(0);
-  points.push_back(-10);
-
-  points.push_back(0);
-  points.push_back(0);
-  points.push_back(10);
-
-  setVertices(points, 3);
-  glUseProgram(program_);
-  glm::mat4 mvp = computeMVP();
-
-  setMVP(mvp);
-  glBindVertexArray(vao_);
-  glDrawArrays(GL_LINES, 0, vertexCount_);
-}
-
-void Renderer::drawPoint(float x, float y, float z, float d){
-  points_.push_back(x);
-  points_.push_back(y);
-  points_.push_back(z);
-}
-
-void Renderer::drawPoints(){
-  setVertices(points_, 3);
+  setVertices(points_, 4);
   glUseProgram(program_);
   setMVP(computeMVP());
   glBindVertexArray(vao_);
+  glPointSize(12);
   glDrawArrays(GL_POINTS, 0, vertexCount_);
   flushPoints();
 }

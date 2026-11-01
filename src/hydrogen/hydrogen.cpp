@@ -1,7 +1,14 @@
 #include <cmath>
 #include <complex>
+#include <vector>
+#include <algorithm>
 
 constexpr double pi = 3.141592653589793;
+namespace{
+struct Spherical {double r, theta, phi;};
+}
+
+namespace hydrogen{
 
 double factorial(int n){
   double f = 1;
@@ -56,6 +63,7 @@ double associatedLegendre(int l, int m, double x){
 }
 
 double radialR(int n, int l, double r){
+  if (l >= n) {return 0;}
   double rho = 2.0*r/n;
   double lnN = 1.5*std::log(2.0/n) + 0.5*(lnFactorial(n - l - 1) - std::log(2.0*n) - lnFactorial(n + l));
   double L = associatedLaguerre(n - l - 1, 2*l + 1, rho);
@@ -72,4 +80,35 @@ double angularY(int l, int m, double theta){
 double probDensity(int n, int l, int m, double r, double theta) {
     double R = radialR(n, l, r); 
     return R*R * angularY(l, m, theta);
+}
+
+Spherical toSpherical(double x, double y, double z){
+  double r = std::sqrt(x*x + y*y + z*z);
+  if(r<1e-12){return{0,0,0};}
+  double theta = std::acos(std::clamp(z / r, -1.0, 1.0));
+  double phi = std::atan2(y, x);
+  return {r, theta, phi};
+}
+
+std::vector<float> densityCloud(double probabilityCutoff, int n, int l, int m, int N, double extent){
+  std::vector<float> points;
+  double step = 2 * extent / (N - 1);
+  for (int i{0}; i<N; ++i){
+    double x = -extent + i * step;
+    for(int j{0}; j<N; ++j){
+      double y = -extent + j * step;
+      for(int k{0}; k<N; ++k){
+        double z = -extent + k * step;
+        Spherical s = toSpherical(x,y,z);
+        double rho = probDensity(n, l, m, s.r, s.theta);
+        if(rho<probabilityCutoff){continue;}
+        points.push_back(static_cast<float>(x));
+        points.push_back(static_cast<float>(y));
+        points.push_back(static_cast<float>(z));
+        points.push_back(static_cast<float>(rho));
+      }
+    }
+  }
+  return points;
+}
 }

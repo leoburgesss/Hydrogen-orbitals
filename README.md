@@ -1,1 +1,1 @@
-[View Current Derivations (unfinished)](./derivations/derivation.pdf)
+[See Derivations (unfinished)](./derivations/derivation.pdf)

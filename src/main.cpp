@@ -39,8 +39,9 @@ if (err != GLEW_OK){std::cerr << "Failed to init Glew\n"; return -1;}
 glGetError();
 
 glEnable(GL_DEPTH_TEST);
-glDepthMask(GL_TRUE);
-glDepthFunc(GL_LEQUAL);
+glEnable(GL_BLEND);
+glBlendFunc(GL_SRC_ALPHA, GL_ONE);
+glDisable(GL_DEPTH_TEST);
 
 //create application class which manages everything
 Application app = Application(window, screenWidth, screenHeight);
