@@ -10,8 +10,8 @@ Application::Application(GLFWwindow* window, int w, int h) : window_(window), wi
 void Application::run(){
   double lastTime = glfwGetTime();
   int frames = 0;
-  std::cout << "Generating density cloud!";
-  std::vector<float> cloud = hydrogen::densityCloud(0.0001, 3, 2, 0, 256, 20);
+  std::cout << "Generating density cloud!\n";
+  std::vector<float> cloud = hydrogen::densityCloud(0.00001, 3, 2, 1, 256, 20);
 
   while (!glfwWindowShouldClose(window_)){
     double now = glfwGetTime();
