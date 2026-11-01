@@ -132,56 +132,28 @@ void Renderer::drawAxis(){
   glDrawArrays(GL_LINES, 0, vertexCount_);
 }
 
-void Renderer::drawCircle(float cx, float cy, float cz, float radius, float d){
-    std::vector<float> points; points.reserve((circleSegments + 2) * 3);
-  
-
-    points.push_back(cx); points.push_back(cy); points.push_back(cz); 
-
-    for(int i{0}; i<=circleSegments; i++){
-      float theta = 2 * (float)i * pi / (float)circleSegments;
-
-      points.push_back(cx + radius * std::cos(theta)); 
-      points.push_back(cy + radius * std::sin(theta));
-      points.push_back(cz);
-    }
-
-    setVertices(points, 3);
-    glUseProgram(program_); //uses the shader handle 
-    glm::mat4 mvp = computeMVP();
-
-    setMVP(mvp);
-    glBindVertexArray(vao_); //makes vao the current vao
-    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount_); //draws the array in vbo every triangles made of the 3 points center point currect vertex and prior vertex to create a circle  
+void Renderer::drawPoint(float x, float y, float z, float d){
+  points_.push_back(x);
+  points_.push_back(y);
+  points_.push_back(z);
 }
 
-void Renderer::drawSphere(float cx, float cy, float cz, float radius, float d){
-  std::vector<float> points; points.reserve(6 * (circleSegments * circleSegments));
-
-  for(int i{0}; i<=circleSegments; i++){
-    for(int j{0}; j<=circleSegments; j++){
-      float theta = (float)i * pi / (float)circleSegments;
-      float phi = 2 * (float)j * pi / (float)circleSegments;
-
-      float sint = std::sin(theta); float sinp = std::sin(phi);
-      float cost = std::cos(theta); float cosp = std::cos(phi);
-
-      points.push_back(cx + radius * sint * cosp);
-      points.push_back(cy + radius * sint * sinp);
-      points.push_back(cz + radius * cost);
-    }}
-    setVertices(points, 3);
-    glUseProgram(program_);
-    glm::mat4 mvp = computeMVP();
-    setMVP(mvp);
-    glBindVertexArray(vao_);
-    glDrawArrays(GL_TRIANGLE_FAN, 0, vertexCount_); //lazy and bad to use triangle fan
-  }
-
+void Renderer::drawPoints(){
+  setVertices(points_, 3);
+  glUseProgram(program_);
+  setMVP(computeMVP());
+  glBindVertexArray(vao_);
+  glDrawArrays(GL_POINTS, 0, vertexCount_);
+  flushPoints();
+}
 
 void Renderer::setMVP(const glm::mat4& mvp) {
     glUseProgram(program_);
     glUniformMatrix4fv(mvpLoc_, 1, GL_FALSE, glm::value_ptr(mvp));
+}
+
+void Renderer::flushPoints(){
+  points_ = {};
 }
 
 Renderer::Renderer(GLFWwindow* window, int w, int h): window_(window), width_(w), height_(h) {

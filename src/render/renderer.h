@@ -11,11 +11,14 @@ class Renderer{
     void drawCircle(float cx, float cy, float cz, float radius, float d);
     void drawAxis();
     void setVertices(const std::vector<float>& points, int components);
-    void drawSphere(float cx, float cy, float cz, float radius, float d);
+    void drawPoint(float x, float y, float z, float d);
+    void drawPoints();
+    void flushPoints();
     void setMVP(const glm::mat4& mvp);
     glm::mat4 computeMVP();
 
   private:
+    std::vector<float> points_;
     GLFWwindow* window_; //pointer to glfw window
     GLuint vao_, vbo_; 
     //vertex buffer object and vertex array object

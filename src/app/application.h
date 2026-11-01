@@ -11,6 +11,7 @@ class Application {
     void run();
 
   private:
+    std::vector<float> points_;
     int width_, height_;
     GLFWwindow* window_;
     Renderer renderer_;

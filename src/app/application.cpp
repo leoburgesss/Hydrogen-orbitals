@@ -1,8 +1,8 @@
-#include "app/application.h"
+#include "application.h"
 #include "render/renderer.h"
+#include "hydrogen/hydrogen.h"
 
-#include <GLFW/glfw3.h>
-#include <GL/glew.h>
+#include <cmath>
 #include <iostream>
 
 Application::Application(GLFWwindow* window, int w, int h) : window_(window), width_(w), height_(h), renderer_(window, w, h) {}
@@ -18,19 +18,20 @@ void Application::run(){
     glClearColor(0.0706f, 0.0431f, 0.0392f, 1.0f);
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     renderer_.drawAxis();
-    for(float z{-2}; z<=2;z+=0.1){
-      for(float x{-2}; x<=2; x+=0.1){
-      renderer_.drawSphere(x, x*std::sin(now + z), z , 0.025, 1);
+    for(float z{-2}; z<=2;z+=0.01){
+      for(float x{-2}; x<=2; x+=0.01){
+      renderer_.drawPoint(x, x*std::sin(now + z), z , 1);
     }}
+    renderer_.drawPoints();
  
     
 
-    //frames++;
-    //if (now - lastTime >= 10) {
-    //  std::cout << (frames / (now - lastTime)) << " FPS\n";
-    //  frames = 0;
-    //  lastTime = now;
-    //}
+    frames++;
+    if (now - lastTime >= 10) {
+      std::cout << (frames / (now - lastTime)) << " FPS\n";
+      frames = 0;
+      lastTime = now;
+    }
     
     //gl draws to buffer behind current when rendering so when finished rendering it swaps buffers to flip frame
     glfwSwapBuffers(window_);
